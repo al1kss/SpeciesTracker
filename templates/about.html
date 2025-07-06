@@ -2,55 +2,477 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About This Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Forest Species Tracker</title>
     <link rel="stylesheet" href="https://unpkg.com/cirrus-ui@0.7.1/dist/cirrus.min.css">
     <script src="https://kit.fontawesome.com/8ee0b8559b.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
     <style>
+        /* Base Styles with Ambient Background */
         body {
-            background-color: #1a1a1a;
+            background: #1a1a1a;
+            {#background-image:#}
+            {#    radial-gradient(circle at 20% 80%, rgba(255, 51, 126, 0.05) 0%, transparent 50%),#}
+            {#    radial-gradient(circle at 80% 20%, rgba(193, 204, 49, 0.04) 0%, transparent 50%),#}
+            {#    radial-gradient(circle at 40% 40%, rgba(255, 154, 97, 0.03) 0%, transparent 50%),#}
+            {#    radial-gradient(circle at 90% 80%, rgba(255, 154, 97, 0.03) 0%, transparent 50%),#}
+            {#    radial-gradient(circle at 10% 30%, rgba(193, 204, 49, 0.02) 0%, transparent 50%);#}
             min-height: 100vh;
-            padding-top: 60px; /* header height so it doesnt overlap */
+            padding-top: 60px;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 20%;
+            left: 70%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 154, 97, 0.03) 20%,rgba(250, 182, 51, 0.05) 0%, rgba(250, 182, 51, 0.05) 12%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(193, 204, 49, 0.02) 0%, transparent 50%);;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 60%;
+            left: 10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0.03) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(30px);
+        }
+
+
+        /* Container Styles */
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+        }
+
+        .hero-title {
+            font-size: 96px;
+            font-family: Inter;
+            font: Inter Fallback;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #e0e0e0, #cbd5e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 96px;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            color: #999ca5;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Shipwrecked Badge */
+        .shipwrecked-badge {
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInScale 1s ease-out 0.5s forwards;
+            margin: 0 auto;
+            align-items: center;
+            display: block;
+            width: fit-content;
+        }
+
+        .shipwrecked-badge img {
+            width: 35%;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 10px 25px rgba(250, 182, 51, 0.3));
+        }
+
+        .shipwrecked-badge img:hover {
+            transform: translateY(-10px) scale(1.05);
+            filter: drop-shadow(0 20px 40px rgba(250, 182, 51, 0.4));
+        }
+
+        /* Story Section */
+        .story-section {
+            margin-bottom: 80px;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.9), rgba(35, 35, 35, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(250, 182, 51, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .story-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(152, 123, 69, 0.1), rgba(236, 194, 114, 0.03), rgba(64, 48, 19, 0.1));
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .story-card:hover::before {
+            opacity: 1;
+        }
+
+        .story-card:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(250, 182, 51, 0.3),
+                0 0 40px rgba(250, 182, 51, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .story-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
             color: #e0e0e0;
         }
-        .btn-sign_up {
-            margin-left: 10px;
-            border-radius: 12px;
-            background: #fab633 !important;
-            color: #1a1a1a !important;
-            margin-top: 10px !important;
+
+        .story-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #cbd5e0;
+            margin-bottom: 20px;
         }
-        .toggle-btn {
-            margin-left: 10px;
-            border-radius: 12px;
-            background: #fab633 !important;
-            color: #1a1a1a !important;
-        }
-        .dropdown-item {
+
+        /* Quote Styles */
+        .teacher-quote {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
+            border-left: 4px solid #e74c3c;
+            padding: 20px;
+            margin: 30px 0;
             border-radius: 8px;
-            background: #f8b73a;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            color: #1a1a1a !important;
+            font-style: italic;
+            color: #ff6b6b;
+            position: relative;
+            padding-top: 30px;
+            padding-left: 30px;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .dropdown-item:hover {
-            background: #fbb01f !important;
-            color: #2d2d2d !important;
+
+        .teacher-quote::before {
+            content: '"';
+            font-size: 50px;
+            color: #e74c3c;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            opacity: 0.3;
         }
-        .header.header-fixed {
-            z-index: 1000;
-            background: #2a2a2a;
+
+        /* Highlight Text */
+        .highlight {
+            background: linear-gradient(135deg, #fab633, #9b59b6, #e74c3c);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-weight: 600;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Tech Stack Section */
+        .tech-section {
+            margin-bottom: 80px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tech-card {
+            background: linear-gradient(135deg, rgba(55, 55, 55, 0.9), rgba(35, 35, 35, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(250, 182, 51, 0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .tech-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tech-card:hover {
+            border-color: rgba(250, 182, 51, 0.4);
+            box-shadow: 0 12px 35px rgba(250, 182, 51, 0.12);
+            transform: translateY(-8px);
+            background: linear-gradient(135deg, rgba(236, 194, 114, 0.03), rgba(35, 35, 35, 0.9));
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            color: #fab633;
+            margin-bottom: 15px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .tech-card:hover .tech-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(250, 182, 51, 0.5));
+        }
+
+        .tech-title {
+            font-size: 1.3rem;
+            font-weight: 600;
             color: #e0e0e0;
+            margin-bottom: 10px;
         }
-        .header-brand a, .header-nav a {
+
+        .tech-description {
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        /* Features Section */
+        .features-section {
+            margin-bottom: 80px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.6), rgba(35, 35, 35, 0.4));
+            border-radius: 12px;
+            border: 1px solid rgba(250, 182, 51, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .feature-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-item:hover {
+            border-color: rgba(250, 182, 51, 0.25);
+            background: linear-gradient(135deg, rgba(250, 182, 51, 0.03), rgba(35, 35, 35, 0.7));
+            transform: translateY(-6px);
+            box-shadow: 0 8px 25px rgba(250, 182, 51, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: #fab633;
+            margin-bottom: 15px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
             color: #e0e0e0;
+            margin-bottom: 10px;
         }
+
+        .feature-description {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Personal Section */
+        .personal-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.8), rgba(35, 35, 35, 0.6));
+            border-radius: 20px;
+            border: 1px solid rgba(250, 182, 51, 0.2);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .personal-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .personal-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fab633, #f39c12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(250, 182, 51, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .personal-avatar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(250, 182, 51, 0.4);
+        }
+
+        .personal-avatar i {
+            font-size: 3rem;
+            color: #1a1a1a;
+        }
+
+        .personal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+        }
+
+        .personal-description {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Typography Enhancement */
         .font {
-            font-family: "Avenir Next", sans-serif;
+            font-family: "Avenir Next", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #e0e0e0;
             padding: 15px;
             margin-top: 4px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .story-card {
+                padding: 25px;
+            }
+            .shipwrecked-badge img {
+                width: 60%;
+            }
+        }
+        .gradient-underline {
+            position: relative;
+            display: inline-block;
+
+        }
+        .gradient-underline::after {
+            content: "";
+            background: linear-gradient(135deg, #fab633, #9b59b6, #e74c3c);
+            position: absolute;
+            left: 0;
+            bottom: 0; /* adjust based on font */
+            width: 100%;
+            height: 3px;
+            border-radius: 2px;
+            background-size: 300% 300%;
+            animation: gradientShifted 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShifted {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
         }
     </style>
 </head>
@@ -58,7 +480,228 @@
 
     {% include 'header.html' %}
 
+    <div class="about-container">
+        <div class="shipwrecked-badge" align="center">
+                <a href="https://shipwrecked.hackclub.com/?t=ghrm" target="_blank">
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/739361f1d440b17fc9e2f74e49fc185d86cbec14_badge.png"
+                         alt="This project is part of Shipwrecked, the world's first hackathon on an island!"
+                         style="width: 35%;">
+                </a>
+        </div>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">From Frustration to Innovation</h1>
+            <p class="hero-subtitle">How I, as a G11 student from Kyrgyzstan, transformed a forest research at UWC ISAK Japan. Built with love FOR students, BY students.</p>
+
+        </section>
+
+        <!-- Story Section -->
+        <section class="story-section">
+            <div class="story-card">
+                <h2 class="story-title">🌲 The Problem in the <span class="highlight">Karuizawa Forest</span></h2>
+                <p class="story-text">
+                    You're a G11 student from Kyrgyzstan, sitting in ESS class at UWC ISAK Japan, listening to your teacher explain for the hundredth time how another group lost their field data right after the class. The beautiful <strong>Karuizawa forest</strong> surrounds your campus, with a view to the magnificent Mount Asama, but how do the students collect species data for ESS class? It's stuck in the stone age.
+                </p>
+                <div class="teacher-quote">
+                    Students forget or lose their paper logs, and we waste time rewriting them. There's no easy way to visualize where samples were taken unless I manually plot them on a map. I want students to see patterns, not just numbers in Excel.
+                </div>
+                <p class="story-text">
+                    My ESS teacher's frustrations were echoing through every fieldwork session. Students would venture into our school's <strong>30-hectare leased forest</strong>, conduct transect sampling, record everything on paper... and then watch it all disappear into backpack black holes or indesceptible handwriting
+                </p>
+            </div>
+
+            <div class="story-card">
+                <h2 class="story-title">💡 The Idea Moment</h2>
+                <p class="story-text">
+                    Here's where my <span class="highlight">past coding adventures</span> kicked in. I'd already built Minecraft plugins and created a weather app with temperature and humidity analysis. When I heard the same complaints session after session, something clicked: <strong>"Why not solve this with coding?"</strong>
+                </p>
+                <p class="story-text">
+                    This wasn't just another homework assignment. This was a real problem affecting real people in a real forest. And <span class="highlight gradient-underline">Shipwrecked</span> which motivated me to start working on making this project come true.
+                </p>
+            </div>
+        </section>
+
+        <!-- Tech Stack Section -->
+        <section class="tech-section">
+            <div class="story-card">
+                <h2 class="story-title">🛠️ Built With Purpose</h2>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h3 class="tech-title">Flask & Python</h3>
+                        <p class="tech-description">Lightweight web framework perfect for rapid development, with SQLite for seamless data management without complex server setup.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3 class="tech-title">Interactive Mapping</h3>
+                        <p class="tech-description">Leaflet.js integration with custom forest boundaries, marker clustering, and real-time species location visualization.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="tech-title">Data Analysis</h3>
+                        <p class="tech-description">Automated generation of distribution graphs, kite diagrams, statistical analysis including mean, standard deviation, and biodiversity metrics.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="tech-title">EXIF Processing</h3>
+                        <p class="tech-description">Automatic GPS coordinate extraction from image metadata, eliminating manual location entry and reducing human error.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="story-card">
+                <h2 class="story-title">✨ What Makes It Special</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <h4 class="feature-title">Smart Image Upload</h4>
+                        <p class="feature-description">Drag & drop interface with automatic GPS extraction and species metadata attachment.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 class="feature-title">Collaborative Platform</h4>
+                        <p class="feature-description">Secure user authentication allowing both students and teachers to contribute and analyze data.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h4 class="feature-title">Quadrant Sampling</h4>
+                        <p class="feature-description">Interactive transect sampling with real-time species count visualization and statistical analysis.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h4 class="feature-title">Instant Analytics</h4>
+                        <p class="feature-description">Automated generation of kite diagrams, distribution graphs, and biodiversity statistics.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4 class="feature-title">Field-Ready Design</h4>
+                        <p class="feature-description">Responsive interface optimized for tablets and phones during outdoor fieldwork.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4 class="feature-title">Forest-Specific</h4>
+                        <p class="feature-description">Custom-tailored for the Karuizawa forest ecosystem with accurate boundary mapping.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personal Section -->
+        <section class="personal-section">
+            <div class="personal-avatar">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h3 class="personal-title">Built by Student, for Students</h3>
+            <p class="personal-description">
+                As a G11 student from Kyrgyzstan at UWC ISAK Japan, I've experienced firsthand the frustrations of traditional field data collection. This project represents not just a technical solution, but a bridge between classroom learning and real-world impact. Created for <span class="highlight">Shipwrecked</span>, the world's first island hackathon, it embodies the spirit of innovative problem-solving that defines our school community nestled in the beautiful Karuizawa forest.
+            </p>
+        </section>
+    </div>
+
     {% include 'footer.html' %}
 
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe story cards
+            document.querySelectorAll('.story-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Observe tech cards
+            document.querySelectorAll('.tech-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Observe feature items
+            document.querySelectorAll('.feature-item').forEach(item => {
+                observer.observe(item);
+            });
+
+            // Observe personal section
+            document.querySelectorAll('.personal-section').forEach(section => {
+                observer.observe(section);
+            });
+
+
+            // Add stagger effect to cards
+            const staggerCards = document.querySelectorAll('.tech-card, .feature-item');
+            staggerCards.forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Add some interactive hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add parallax effect to hero section
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.hero-section');
+                if (parallax) {
+                    const speed = scrolled * 0.5;
+                    parallax.style.transform = `translateY(${speed}px)`;
+                }
+            });
+
+            // Add typing effect to quotes
+            const quotes = document.querySelectorAll('.teacher-quote');
+            quotes.forEach(quote => {
+                quote.addEventListener('mouseenter', () => {
+                    quote.style.transform = 'scale(1.02)';
+                    quote.style.boxShadow = '0 12px 30px rgba(231, 76, 60, 0.2)';
+                });
+
+                quote.addEventListener('mouseleave', () => {
+                    quote.style.transform = 'scale(1)';
+                    quote.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
