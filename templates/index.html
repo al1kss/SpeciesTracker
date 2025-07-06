@@ -55,27 +55,6 @@
                 66% { transform: translate(20px, 30px) rotate(240deg); }
             }
 
-            /* Enhanced Header with Glow */
-            .header.header-fixed {
-                z-index: 1000;
-                background: rgba(42, 42, 42, 0.95);
-                backdrop-filter: blur(20px);
-                border-bottom: 1px solid rgba(250, 182, 51, 0.1);
-                color: #e0e0e0;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-                transition: all 0.3s ease;
-            }
-
-            .header-brand a, .header-nav a {
-                color: #e0e0e0;
-                transition: all 0.3s ease;
-                position: relative;
-            }
-
-            .header-nav a:hover {
-                color: #fab633;
-                text-shadow: 0 0 10px rgba(250, 182, 51, 0.5);
-            }
 
             /* Enhanced Upload Card with Ambient Glow */
             .upload-card {
@@ -224,50 +203,6 @@
 
             .btn-upload:hover::before {
                 left: 100%;
-            }
-
-            .btn-sign_up {
-                margin-left: 10px;
-                border-radius: 12px;
-                background: linear-gradient(135deg, #fab633, #f39c12) !important;
-                color: #1a1a1a !important;
-                margin-top: 10px !important;
-                transition: all 0.3s ease !important;
-                box-shadow: 0 4px 15px rgba(250, 182, 51, 0.3);
-            }
-
-            .btn-sign_up:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(250, 182, 51, 0.4);
-            }
-
-            .toggle-btn {
-                margin-left: 10px;
-                border-radius: 12px;
-                background: linear-gradient(135deg, #fab633, #f39c12) !important;
-                color: #1a1a1a !important;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(250, 182, 51, 0.3);
-            }
-
-            .toggle-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(250, 182, 51, 0.4);
-            }
-
-            .dropdown-item {
-                border-radius: 8px;
-                background: linear-gradient(135deg, #f8b73a, #fab633);
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-                color: #1a1a1a !important;
-                transition: all 0.3s ease;
-            }
-
-            .dropdown-item:hover {
-                background: linear-gradient(135deg, #fbb01f, #f8b73a) !important;
-                color: #2d2d2d !important;
-                transform: translateY(-1px);
-                box-shadow: 0 6px 15px rgba(250, 182, 51, 0.4);
             }
 
             /* Enhanced Map Container */
@@ -820,51 +755,11 @@
             .upload-card:hover {
                 animation: glowPulse 3s ease-in-out infinite;
             }
-
     </style>
 </head>
 <body>
-    <!-- Header part -->
-    <div class="header header-fixed">
-        <div class="header-brand">
-            <div class="nav-item no-hover">
-                <a href="/">
-                    <img src="/static/logo.png" alt="Logo" class="logo" style="width: 32px">
-                    <h6 class="title">ForestSpeciesTracker</h6>
-                </a>
-            </div>
-        </div>
-        <div class="header-nav">
-                <div class="nav-items nav-left u-center">
-                    <a href="/" class="font">Home</a>
-                    <a href="/about" class="font">About</a>
-                    <a href="/upload" class="font">Upload</a>
-                </div>
-        </div>
-        <div class="header-nav" id="header-menu">
-            <div class="nav-right">
-                {% if logged_in %}
-                        <div class="nav-item has-sub toggle-hover">
-                            <button class="btn--sm toggle-btn">
-                                <i class="fa-solid fa-user"></i>  {{ username }}
-                            </button>
-                            <div class="dropdown-menu dropdown-animated" style="background-color: transparent; border-color: transparent; margin-top: -5px">
-                                <a class="dropdown-item" href="/logout">Sign Out</a>
-                            </div>
-                        </div>
-                {% else %}
-                <div class="nav-items u-center nav-right">
-                    <a href="/login" class="font">Login</a>
-                    <a href="/sign-in">
-                    <button class="btn--sm btn-sign_up font-bold">Sign up
-                            <i class="fa-solid fa-right-to-bracket"></i>
-                    </button>
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+
+    {% include 'header.html' %}
 
     <div class="container">
         <!-- Map part -->
@@ -964,6 +859,8 @@
             </div>
         </div>
     </div>
+
+    {% include 'footer.html' %}
 
     <script>
         const dropZone = document.getElementById('dropZone');

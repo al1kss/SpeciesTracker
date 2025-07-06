@@ -55,47 +55,10 @@
     </style>
 </head>
 <body>
-<!-- Header part -->
-    <div class="header header-fixed">
-        <div class="header-brand">
-            <div class="nav-item no-hover">
-                <a href="/">
-                    <img src="/static/logo.png" alt="Logo" class="logo" style="width: 32px">
-                    <h6 class="title">ForestSpeciesTracker</h6>
-                </a>
-            </div>
-        </div>
-        <div class="header-nav">
-                <div class="nav-items nav-left u-center">
-                    <a href="/" class="font">Home</a>
-                    <a href="/about" class="font">About</a>
-                    <a href="/upload" class="font">Upload</a>
-                </div>
-        </div>
-        <div class="header-nav" id="header-menu">
-            <div class="nav-right">
-                {% if logged_in %}
-                        <div class="nav-item has-sub toggle-hover">
-                            <button class="btn--sm toggle-btn">
-                                <i class="fa-solid fa-user"></i>  {{ username }}
-                            </button>
-                            <div class="dropdown-menu dropdown-animated" style="background-color: transparent; border-color: transparent; margin-top: -5px">
-                                <a class="dropdown-item" href="/logout">Sign Out</a>
-                            </div>
-                        </div>
-                {% else %}
-                <div class="nav-items u-center nav-right">
-                    <a href="/login" class="font">Login</a>
-                    <a href="/sign-in">
-                    <button class="btn--sm btn-sign_up font-bold">Sign up
-                            <i class="fa-solid fa-right-to-bracket"></i>
-                    </button>
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+
+    {% include 'header.html' %}
+
+    {% include 'footer.html' %}
 
 </body>
 </html>

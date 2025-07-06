@@ -11,12 +11,12 @@
     <style>
         body {
             background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 175vh;
+            padding-top: 30px;
             margin: 0;
             color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
         }
         .signin-container {
             max-width: 400px;
@@ -26,6 +26,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             color: #e0e0e0;
+            margin: auto;
         }
         .signin-container:hover {
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
@@ -55,22 +56,6 @@
             color: #1a1a1a !important;
             margin-top: 10px !important;
         }
-        .toggle-btn {
-            margin-left: 10px;
-            border-radius: 12px;
-            background: #fab633 !important;
-            color: #1a1a1a !important;
-        }
-        .dropdown-item {
-            border-radius: 8px;
-            background: #f8b73a;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            color: #1a1a1a !important;
-        }
-        .dropdown-item:hover {
-            background: #fbb01f !important;
-            color: #2d2d2d !important;
-        }
         .header.header-fixed {
             z-index: 1000;
             background: #2a2a2a;
@@ -89,47 +74,8 @@
         </style>
 </head>
 <body>
-    <!-- Header part -->
-    <div class="header header-fixed">
-        <div class="header-brand">
-            <div class="nav-item no-hover">
-                <a href="/">
-                    <img src="/static/logo.png" alt="Logo" class="logo" style="width: 32px">
-                    <h6 class="title">ForestSpeciesTracker</h6>
-                </a>
-            </div>
-        </div>
-        <div class="header-nav">
-                <div class="nav-items nav-left u-center">
-                    <a href="/" class="font">Home</a>
-                    <a href="/about" class="font">About</a>
-                    <a href="/upload" class="font">Upload</a>
-                </div>
-        </div>
-        <div class="header-nav" id="header-menu">
-            <div class="nav-right">
-                {% if logged_in %}
-                        <div class="nav-item has-sub toggle-hover">
-                            <button class="btn--sm toggle-btn" type="button" >
-                                <i class="fa-solid fa-user"></i>  {{ username }}
-                            </button>
-                            <div class="dropdown-menu dropdown-animated">
-                                <a class="dropdown-item" href="/logout">Sign Out</a>
-                            </div>
-                        </div>
-                {% else %}
-                <div class="nav-items u-center nav-right">
-                    <a href="/login" class="font">Login</a>
-                    <a href="/sign-in">
-                    <button class="btn--sm btn-sign_up font-bold">Sign up
-                            <i class="fa-solid fa-right-to-bracket"></i>
-                    </button>
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+
+    {% include 'header.html' %}
 
     <div class="signin-container card">
         <h2 class="u-text-center">Welcome!</h2>
@@ -156,6 +102,8 @@
             <a href="/login" class="login-link text-xs font-bold">Already have an account, Login!</a>
         </form>
     </div>
+
+    {% include 'footer.html' %}
 
     <script>
         document.getElementById('signinForm').addEventListener('submit', function(event) {
