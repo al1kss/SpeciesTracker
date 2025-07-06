@@ -768,6 +768,280 @@
             .upload-card:hover {
                 animation: glowPulse 3s ease-in-out infinite;
             }
+            /* Upload and Analysis Layout - Enhanced */
+            .upload-analysis-section {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 50px;
+                width: 100%;
+                max-width: 1200px;
+                margin: 30px 0;
+                flex-wrap: wrap;
+            }
+
+            .upload-side {
+                flex: 1;
+                max-width: 500px;
+                min-width: 400px;
+            }
+
+            .analyze-side {
+                flex: 1;
+                max-width: 500px;
+                min-width: 400px;
+                display: flex;
+                justify-content: center;
+            }
+
+            .flow-arrow {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                flex-shrink: 0;
+                padding: 20px;
+            }
+
+            .arrow-label {
+                color: #fab633;
+                font-weight: 700;
+                font-size: 15px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                white-space: nowrap;
+                text-shadow:
+                    0 0 15px rgba(250, 182, 51, 0.4),
+                    0 0 25px rgba(231, 76, 200, 0.6),
+                    0 0 35px rgba(231, 76, 200, 0.4);
+                background: linear-gradient(135deg, #fab633, #f39c12);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                transition: all 0.4s ease;
+            }
+
+            .arrow-label:hover {
+                text-shadow:
+                    0 0 20px rgba(250, 182, 51, 0.6),
+                    0 0 35px rgba(231, 76, 200, 0.8),
+                    0 0 50px rgba(231, 76, 200, 0.6),
+                    0 0 70px rgba(231, 76, 200, 0.4);
+                transform: scale(1.05);
+            }
+
+            .arrow-icon {
+                font-size: 28px;
+                color: #fab633;
+                filter: drop-shadow(0 0 20px rgba(250, 182, 51, 0.6));
+                transition: all 0.3s ease;
+            }
+
+            .arrow-icon:hover {
+                transform: translateX(5px);
+                filter: drop-shadow(0 0 25px rgba(250, 182, 51, 0.8));
+            }
+
+            .analyze-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 30px;
+                background: linear-gradient(135deg, rgba(45, 45, 45, 0.7), rgba(35, 35, 35, 0.5));
+                backdrop-filter: blur(20px);
+                border-radius: 20px;
+                border: 1px solid rgba(250, 182, 51, 0.2);
+                box-shadow:
+                    0 8px 32px rgba(0, 0, 0, 0.3),
+                    0 0 0 1px rgba(250, 182, 51, 0.1);
+                transition: all 0.4s ease;
+            }
+
+            .analyze-container:hover {
+                transform: translateY(-5px);
+                border-color: rgba(250, 182, 51, 0.4);
+                box-shadow:
+                    0 20px 50px rgba(0, 0, 0, 0.4),
+                    0 0 40px rgba(250, 182, 51, 0.2);
+            }
+
+            .btn-analyze {
+                padding: 18px 36px;
+                background: #fab633;
+                color: #1a1a1a;
+                border: none;
+                border-radius: 14px;
+                font-size: 16px;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow:
+                    0 8px 25px rgba(250, 182, 51, 0.35),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn-analyze::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+                transition: left 0.6s ease;
+            }
+
+            .btn-analyze:hover {
+                transform: translateY(-3px) scale(1.02);
+                background: #fbb01f;
+                box-shadow:
+                    0 15px 45px rgba(250, 182, 51, 0.5),
+                    0 0 50px rgba(250, 182, 51, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+
+            .btn-analyze:hover::before {
+                left: 100%;
+            }
+
+            .btn-analyze:active {
+                transform: translateY(-1px) scale(1.01);
+                transition: all 0.1s ease;
+            }
+
+            .btn-analyze i {
+                font-size: 18px;
+                transition: all 0.3s ease;
+            }
+
+            .btn-analyze:hover i {
+                transform: scale(1.1);
+            }
+
+            .analyze-description {
+                color: #cbd5e0;
+                font-size: 14px;
+                text-align: center;
+                max-width: 280px;
+                line-height: 1.6;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .analyze-container:hover .analyze-description {
+                color: #e0e0e0;
+                text-shadow: 0 0 10px rgba(250, 182, 51, 0.2);
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .upload-analysis-section {
+                    flex-direction: column;
+                    gap: 40px;
+                }
+
+                .upload-side, .analyze-side {
+                    min-width: auto;
+                    width: 100%;
+                    max-width: 500px;
+                }
+
+                .flow-arrow {
+                    transform: rotate(90deg);
+                    padding: 15px;
+                }
+
+                .arrow-label {
+                    transform: rotate(-90deg);
+                    font-size: 13px;
+                }
+
+                .analyze-container {
+                    padding: 25px;
+                }
+            }
+            /* Analysis Modal Styles - Simplified */
+            .analysis-modal-content {
+                max-width: 450px;
+                background: linear-gradient(135deg, rgba(45, 45, 45, 0.95), rgba(26, 26, 26, 0.9));
+            }
+
+            .analysis-progress-container {
+                text-align: center;
+                padding: 40px 30px;
+            }
+
+            .progress-icon {
+                margin-bottom: 30px;
+            }
+
+            .analysis-icon {
+                font-size: 64px;
+                color: #fab633;
+                filter: drop-shadow(0 0 25px rgba(250, 182, 51, 0.6));
+                transition: all 0.3s ease;
+            }
+
+            .progress-text {
+                font-size: 20px;
+                font-weight: 600;
+                color: #e0e0e0;
+                margin-bottom: 30px;
+                min-height: 28px;
+                text-shadow: 0 0 15px rgba(250, 182, 51, 0.3);
+            }
+
+            .progress-bar-container {
+                width: 100%;
+                height: 12px;
+                background: rgba(45, 45, 45, 0.8);
+                border-radius: 6px;
+                overflow: hidden;
+                margin-bottom: 20px;
+                border: 1px solid rgba(250, 182, 51, 0.3);
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .progress-bar {
+                height: 100%;
+                background: linear-gradient(90deg, #fab633, #f39c12, #fab633);
+                background-size: 200% 100%;
+                border-radius: 6px;
+                width: 0%;
+                transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow:
+                    0 0 20px rgba(250, 182, 51, 0.6),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                position: relative;
+            }
+
+            .progress-bar::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                background-size: 50% 100%;
+                border-radius: 6px;
+            }
+
+            .progress-percentage {
+                font-size: 28px;
+                font-weight: 700;
+                color: #fab633;
+                text-shadow: 0 0 15px rgba(250, 182, 51, 0.5);
+                margin-top: 10px;
+            }
     </style>
 </head>
 <body>
@@ -778,33 +1052,86 @@
         <!-- Map part -->
         <div id="map"></div>
 
-        <!-- Warning box for non-logged-in users -->
-        {% if not logged_in %}
-        <div class="upload-warning card warning-hover" style="max-width: 500px; width: 100%; margin: 20px 0 0 0; background: linear-gradient(135deg, #3498db, #2980b9); border-left: 4px solid #2c3e50; padding: 15px; border-radius: 8px;">
-            <div class="level" style="margin: 0;">
-                <div class="level-left">
-                    <div class="level-item">
-                        <i class="fas fa-triangle-exclamation" style="color: #fff; margin-right: 10px; font-size: 18px;"></i>
-                        <span style="color: #fff; font-weight: 600;">You need to login first to upload images</span>
+        {% include 'divider.html' %}
+
+        <!-- Upload and Analysis Section -->
+        <div class="upload-analysis-section">
+            <!-- Left side: Upload -->
+            <div class="upload-side">
+                <!-- Warning box for non-logged-in users -->
+                {% if not logged_in %}
+                <div class="upload-warning card warning-hover" style="background: linear-gradient(135deg, #3498db, #2980b9); border-left: 4px solid #2c3e50; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <div class="level" style="margin: 0;">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <i class="fas fa-triangle-exclamation" style="color: #fff; margin-right: 10px; font-size: 18px;"></i>
+                                <span style="color: #fff; font-weight: 600;">You need to login first to upload images</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Image upload part -->
+                <div class="upload-card card">
+                    <h2>Upload Forest Species Images</h2>
+                    <div class="drop-zone {% if not logged_in %}disabled{% endif %}" id="dropZone">
+                        <button class="btn btn-danger btn--xl {% if not logged_in %}btn-disabled{% else %}btn-upload{% endif %}"
+                                {% if not logged_in %}disabled{% endif %}
+                                onclick="{% if logged_in %}document.getElementById('fileInput').click(){% endif %}">
+                            Select Images
+                        </button>
+                        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" {% if not logged_in %}disabled{% endif %}>
+                        <p class="text-sm" style="text-decoration: underline; {% if not logged_in %}color: #666;{% endif %}">
+                            {% if logged_in %}or drop images here{% else %}Login required to upload{% endif %}
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endif %}
 
-        <!-- Image upload part -->
-        <div class="upload-card card">
-            <h2>Upload Forest Species Images</h2>
-            <div class="drop-zone {% if not logged_in %}disabled{% endif %}" id="dropZone">
-                <button class="btn btn-danger btn--xl {% if not logged_in %}btn-disabled{% else %}btn-upload{% endif %}"
-                        {% if not logged_in %}disabled{% endif %}
-                        onclick="{% if logged_in %}document.getElementById('fileInput').click(){% endif %}">
-                    Select Images
-                </button>
-                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" {% if not logged_in %}disabled{% endif %}>
-                <p class="text-sm" style="text-decoration: underline; {% if not logged_in %}color: #666;{% endif %}">
-                    {% if logged_in %}or drop images here{% else %}Login required to upload{% endif %}
-                </p>
+            <!-- Arrow and Label -->
+            <div class="flow-arrow">
+                <div class="arrow-label">Analyze Data</div>
+                <div class="arrow-icon">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Right side: Analysis -->
+            <div class="analyze-side">
+                <div class="analyze-container">
+                    <button class="btn-analyze" onclick="startAnalysis()">
+                        <i class="fas fa-chart-bar"></i>
+                        Generate Insights
+                    </button>
+                    <p class="analyze-description">
+                        Create distribution graphs, kite diagrams & statistical analysis
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Progress Modal -->
+    <div class="modal-overlay" id="analysisModal">
+        <div class="modal-content analysis-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-brain"></i>
+                    Analyzing Forest Data
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="analysis-progress-container">
+                    <div class="progress-icon">
+                        <i class="fas fa-seedling analysis-icon"></i>
+                    </div>
+                    <div class="progress-text" id="progressText">Preparing your graphs...</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-percentage" id="progressPercentage">0%</div>
+                </div>
             </div>
         </div>
     </div>
@@ -1535,6 +1862,48 @@
                    L.control.layers(null, overlayLayers, { collapsed: false }).addTo(map);
                });
         });
+
+        function startAnalysis() {
+            document.getElementById('analysisModal').style.display = 'flex';
+
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const progressPercentage = document.getElementById('progressPercentage');
+
+            let progress = 0;
+            const totalDuration = 4000; // 4 seconds
+            const interval = 50; // Update every 50ms
+            const increment = (100 / (totalDuration / interval));
+
+            // Start with first message
+            progressText.textContent = "Preparing your graphs...";
+
+            const progressInterval = setInterval(() => {
+                progress += increment;
+
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+
+                    // Final message and redirect
+                    progressText.textContent = "Analysis complete!";
+                    progressPercentage.textContent = "100%";
+                    progressBar.style.width = "100%";
+
+                    setTimeout(() => {
+                        window.location.href = '/output/';
+                    }, 800);
+                } else {
+                    // Change message halfway through
+                    if (progress >= 50 && progressText.textContent === "Preparing your graphs...") {
+                        progressText.textContent = "Doing transect sampling...";
+                    }
+
+                    progressPercentage.textContent = Math.round(progress) + '%';
+                    progressBar.style.width = progress + '%';
+                }
+            }, interval);
+        }
     </script>
 </body>
 </html>
