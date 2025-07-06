@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Transect Sampling Graphs</title>
-        <link rel="stylesheet" href="https://unpkg.com/cirrus-ui@0.7.1/dist/cirrus.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecological Analysis - Forest Species Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/cirrus-ui@0.7.1/dist/cirrus.min.css">
     <script src="https://kit.fontawesome.com/8ee0b8559b.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
     <style>
+        /* Enhanced Dark Theme */
         body {
-            background-color: #1a1a1a;
+            background: #1a1a1a;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(255, 51, 126, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(193, 204, 49, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 154, 97, 0.03) 0%, transparent 50%);
             min-height: 100vh;
-            padding-top: 60px; /* header height so it doesnt overlap */
+            padding-top: 60px;
             color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -22,8 +30,7 @@
             left: 70%;
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(255, 154, 97, 0.03) 20%,rgba(250, 182, 51, 0.05) 0%, rgba(250, 182, 51, 0.05) 12%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(193, 204, 49, 0.02) 0%, transparent 50%);;
+            background: radial-gradient(circle, rgba(255, 154, 97, 0.03) 20%,rgba(250, 182, 51, 0.05) 0%, rgba(250, 182, 51, 0.05) 12%, transparent 50%);
             border-radius: 50%;
             pointer-events: none;
             z-index: -1;
@@ -43,13 +50,724 @@
             z-index: -1;
             filter: blur(30px);
         }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.9), rgba(35, 35, 35, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(250, 182, 51, 0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fab633, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #cbd5e0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(45, 45, 45, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(250, 182, 51, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            border-color: rgba(250, 182, 51, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(250, 182, 51, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fab633;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-top: 5px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Graphs Grid */
+        .graphs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .graph-card {
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.9), rgba(35, 35, 35, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(250, 182, 51, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .graph-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(250, 182, 51, 0.1), rgba(250, 182, 51, 0.15), rgba(250, 182, 51, 0.1));
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .graph-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(250, 182, 51, 0.2),
+                0 0 30px rgba(250, 182, 51, 0.1);
+        }
+
+        .graph-card:hover::before {
+            opacity: 1;
+        }
+
+        .graph-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(250, 182, 51, 0.2);
+        }
+
+        .graph-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .graph-title i {
+            color: #fab633;
+            font-size: 1.1rem;
+        }
+
+        .download-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #fab633, #f39c12);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #fbb01f, #fab633);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(250, 182, 51, 0.3);
+            color: #1a1a1a;
+        }
+
+        .graph-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            background: #2d2d2d;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(250, 182, 51, 0.1);
+        }
+
+        .graph-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* No Data State */
+        .no-data-container {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.9), rgba(35, 35, 35, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 600px;
+            border: 1px solid rgba(250, 182, 51, 0.2);
+        }
+
+        .no-data-icon {
+            font-size: 4rem;
+            color: #fab633;
+            margin-bottom: 30px;
+            opacity: 0.7;
+        }
+
+        .no-data-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+
+        .no-data-message {
+            color: #a0a0a0;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .upload-link {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #fab633, #f39c12);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-link:hover {
+            background: linear-gradient(135deg, #fbb01f, #fab633);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(250, 182, 51, 0.4);
+            color: #1a1a1a;
+        }
+
+        /* Loading States */
+        .loading-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(250, 182, 51, 0.3);
+            border-top: 4px solid #fab633;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Graph Type Specific Styles */
+        .wide-graph {
+            grid-column: span 2;
+        }
+
+        .tall-graph {
+            grid-row: span 2;
+        }
+
+        /* Typography Enhancement */
+        .font {
+            font-family: "Avenir Next", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #e0e0e0;
+            padding: 15px;
+            margin-top: 4px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .graphs-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .wide-graph {
+                grid-column: span 1;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .stats-row {
+                gap: 20px;
+            }
+
+            .hero-section {
+                padding: 30px 15px;
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .graph-card {
+                padding: 20px;
+            }
+
+            .stats-row {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animation Enhancements */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .graph-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .graph-card:nth-child(1) { animation-delay: 0.1s; }
+        .graph-card:nth-child(2) { animation-delay: 0.2s; }
+        .graph-card:nth-child(3) { animation-delay: 0.3s; }
+        .graph-card:nth-child(4) { animation-delay: 0.4s; }
+        .graph-card:nth-child(5) { animation-delay: 0.5s; }
+        .graph-card:nth-child(6) { animation-delay: 0.6s; }
+        .graph-card:nth-child(7) { animation-delay: 0.7s; }
+        .graph-card:nth-child(8) { animation-delay: 0.8s; }
+        .graph-card:nth-child(9) { animation-delay: 0.9s; }
+
+        /* Tooltip Enhancement */
+        .graph-title::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .graph-title:hover::after {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
 
     {% include 'header.html' %}
 
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">
+                <i class="fas fa-chart-line"></i>
+                Ecological Data Analysis
+            </h1>
+            <p class="hero-subtitle">
+                Comprehensive quadrant sampling analysis and species distribution insights from the Karuizawa Forest ecosystem
+            </p>
+
+            {% if not no_data %}
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalSpecies">-</span>
+                    <span class="stat-label">Total Species Recorded</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalQuadrats">66</span>
+                    <span class="stat-label">Total Quadrats Analyzed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="occupiedQuadrats">-</span>
+                    <span class="stat-label">Quadrats with Species</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="diversityIndex">-</span>
+                    <span class="stat-label">Species Types Found</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if no_data %}
+        <!-- No Data State -->
+        <div class="no-data-container">
+            <div class="no-data-icon">
+                <i class="fas fa-seedling"></i>
+            </div>
+            <h2 class="no-data-title">No Species Data Available</h2>
+            <p class="no-data-message">
+                Start your ecological research by uploading images of forest species with location data.
+                Once you have uploaded some images, return here to see comprehensive analysis including
+                population estimates, quadrant sampling results, and biodiversity metrics.
+            </p>
+            <a href="/upload" class="upload-link">
+                <i class="fas fa-camera"></i>
+                Upload Species Images
+            </a>
+        </div>
+        {% else %}
+
+        <!-- Analysis Graphs Grid -->
+        <div class="graphs-container">
+
+            <!-- Species Distribution Chart -->
+            {% if graphs.species_distribution %}
+            <div class="graph-card">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Bar chart showing count of each species type found">
+                        <i class="fas fa-chart-bar"></i>
+                        Species Distribution by Type
+                    </h3>
+                    <a href="/download_graph/species_distribution" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.species_distribution }}" alt="Species Distribution Chart">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Quadrant Heatmap -->
+            {% if graphs.quadrant_heatmap %}
+            <div class="graph-card">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Heatmap showing species density across forest quadrants">
+                        <i class="fas fa-th"></i>
+                        Quadrant Species Density Heatmap
+                    </h3>
+                    <a href="/download_graph/quadrant_heatmap" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.quadrant_heatmap }}" alt="Quadrant Heatmap">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Population Estimation -->
+            {% if graphs.population_estimation %}
+            <div class="graph-card wide-graph">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Ecological population estimation using standard quadrat sampling formula">
+                        <i class="fas fa-calculator"></i>
+                        Population Estimation Analysis
+                    </h3>
+                    <a href="/download_graph/population_estimation" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.population_estimation }}" alt="Population Estimation Chart">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Percentage Frequency -->
+            {% if graphs.percentage_frequency %}
+            <div class="graph-card wide-graph">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Percentage frequency showing distribution of species across quadrats">
+                        <i class="fas fa-percentage"></i>
+                        Percentage Frequency Analysis
+                    </h3>
+                    <a href="/download_graph/percentage_frequency" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.percentage_frequency }}" alt="Percentage Frequency Chart">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Kite Diagram -->
+            {% if graphs.kite_diagram %}
+            <div class="graph-card">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Kite diagrams showing species abundance along transect lines">
+                        <i class="fas fa-chart-area"></i>
+                        Kite Diagram (Transect Analysis)
+                    </h3>
+                    <a href="/download_graph/kite_diagram" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.kite_diagram }}" alt="Kite Diagram">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Diversity Pie Chart -->
+            {% if graphs.diversity_pie %}
+            <div class="graph-card">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Donut chart showing proportional species diversity">
+                        <i class="fas fa-chart-pie"></i>
+                        Species Diversity Distribution
+                    </h3>
+                    <a href="/download_graph/diversity_pie" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.diversity_pie }}" alt="Species Diversity Pie Chart">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Statistical Summary -->
+            {% if graphs.statistical_summary %}
+            <div class="graph-card wide-graph">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Statistical analysis including mean, standard deviation, and distribution">
+                        <i class="fas fa-chart-line"></i>
+                        Statistical Summary & Analysis
+                    </h3>
+                    <a href="/download_graph/statistical_summary" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.statistical_summary }}" alt="Statistical Summary">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Spatial Distribution -->
+            {% if graphs.spatial_scatter %}
+            <div class="graph-card">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Geographic scatter plot showing species locations within forest boundaries">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Spatial Distribution Map
+                    </h3>
+                    <a href="/download_graph/spatial_scatter" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.spatial_scatter }}" alt="Spatial Distribution">
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Upload Timeline -->
+            {% if graphs.upload_timeline %}
+            <div class="graph-card">
+                <div class="graph-header">
+                    <h3 class="graph-title" data-tooltip="Timeline showing species upload activity over time">
+                        <i class="fas fa-clock"></i>
+                        Upload Timeline Analysis
+                    </h3>
+                    <a href="/download_graph/upload_timeline" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </a>
+                </div>
+                <div class="graph-image">
+                    <img src="{{ graphs.upload_timeline }}" alt="Upload Timeline">
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+        {% endif %}
+    </div>
+
     {% include 'footer.html' %}
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calculate and display summary statistics
+            {% if not no_data %}
+            // These would be calculated server-side and passed to template
+            // For now, showing placeholder functionality
+
+            // You can add more JavaScript here to:
+            // 1. Add interactive tooltips
+            // 2. Implement graph zoom functionality
+            // 3. Add export options (PDF, etc.)
+            // 4. Real-time data updates
+
+            // Example of updating stats (you'd get this data from the backend)
+            fetch('/get_images/')
+                .then(response => response.json())
+                .then(data => {
+                    const totalSpecies = data.length;
+                    const speciesTypes = new Set(data.map(img => img.species_type || 'Unknown'));
+                    const diversityCount = speciesTypes.size;
+
+                    // Count occupied quadrats (simplified)
+                    const occupiedQuadrats = data.filter(img => img.latitude && img.longitude).length;
+
+                    document.getElementById('totalSpecies').textContent = totalSpecies;
+                    document.getElementById('diversityIndex').textContent = diversityCount;
+                    document.getElementById('occupiedQuadrats').textContent = occupiedQuadrats;
+                })
+                .catch(error => {
+                    console.log('Error fetching stats:', error);
+                });
+            {% endif %}
+
+            // Add smooth scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all graph cards
+            document.querySelectorAll('.graph-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Add download click tracking
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Add visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Enhanced tooltip functionality
+            document.querySelectorAll('.graph-title[data-tooltip]').forEach(title => {
+                title.style.position = 'relative';
+                title.style.cursor = 'help';
+            });
+        });
+
+        // Function to download all graphs as ZIP (future enhancement)
+        function downloadAllGraphs() {
+            // This would trigger a server endpoint that creates a ZIP file
+            // with all graphs and returns it for download
+            alert('Bulk download functionality coming soon!');
+        }
+
+        // Print functionality
+        function printReport() {
+            window.print();
+        }
+    </script>
+
+    <!-- Print Styles -->
+    <style media="print">
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        .graph-card {
+            page-break-inside: avoid;
+            background: white !important;
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+        }
+
+        .download-btn {
+            display: none !important;
+        }
+
+        .hero-section {
+            background: white !important;
+            color: black !important;
+        }
+    </style>
 </body>
 </html>
