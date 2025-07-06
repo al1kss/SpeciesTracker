@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/cirrus-ui@0.7.1/dist/cirrus.min.css">
+    <script src="https://kit.fontawesome.com/8ee0b8559b.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            padding-top: 60px; /* header height so it doesnt overlap */
+            color: #e0e0e0;
+        }
+        .btn-sign_up {
+            margin-left: 10px;
+            border-radius: 12px;
+            background: #fab633 !important;
+            color: #1a1a1a !important;
+            margin-top: 10px !important;
+        }
+        .toggle-btn {
+            margin-left: 10px;
+            border-radius: 12px;
+            background: #fab633 !important;
+            color: #1a1a1a !important;
+        }
+        .dropdown-item {
+            border-radius: 8px;
+            background: #f8b73a;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            color: #1a1a1a !important;
+        }
+        .dropdown-item:hover {
+            background: #fbb01f !important;
+            color: #2d2d2d !important;
+        }
+        .header.header-fixed {
+            z-index: 1000;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+        .header-brand a, .header-nav a {
+            color: #e0e0e0;
+        }
+        .font {
+            font-family: "Avenir Next", sans-serif;
+            color: #e0e0e0;
+            padding: 15px;
+            margin-top: 4px;
+
+        }
+        .upload-card {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            background: #2d2d2d;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;  /* distance between map and upload part */
+        }
+        .upload-card h2 {
+            color: #e0e0e0;
+        }
+        .drop-zone {
+            border: 2px dashed #4a4a4a;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+            background: #2d2d2d;
+        }
+        .drop-zone.dragover {
+            border-color: #3498db;
+            background-color: #3a3a3a;
+        }
+        .drop-zone p {
+            margin-top: 1rem;
+            color: #a0a0a0;
+        }
+
+        .btn-upload {
+            margin-bottom: 1rem;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+            background: #fab633;
+            color: #1a1a1a;
+        }
+        .upload-warning {
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+
+        }
+
+        .warning-hover {
+            transform: scale(1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #3498db, #2980b9) !important;
+        }
+
+        .warning-hover:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #5dade2, #3498db) !important;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            cursor: pointer;
+        }
+
+        .warning-hover:hover .fas {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+
+        .warning-hover .fas {
+            transition: transform 0.3s ease;
+        }
+
+        .drop-zone.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #666;
+        }
+
+        .btn-disabled {
+            background: #666 !important;
+            color: #999 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+        }
+
+        .btn-disabled:hover {
+            background: #666 !important;
+            color: #999 !important;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Header part -->
+    <div class="header header-fixed">
+        <div class="header-brand">
+            <div class="nav-item no-hover">
+                <a href="/">
+                    <img src="/static/logo.png" alt="Logo" class="logo" style="width: 32px">
+                    <h6 class="title">ForestSpeciesTracker</h6>
+                </a>
+            </div>
+        </div>
+        <div class="header-nav">
+                <div class="nav-items nav-left u-center">
+                    <a href="/" class="font">Home</a>
+                    <a href="/about" class="font">About</a>
+                    <a href="/upload" class="font">Upload</a>
+                </div>
+        </div>
+        <div class="header-nav" id="header-menu">
+            <div class="nav-right">
+                {% if logged_in %}
+                        <div class="nav-item has-sub toggle-hover">
+                            <button class="btn--sm toggle-btn">
+                                <i class="fa-solid fa-user"></i>  {{ username }}
+                            </button>
+                            <div class="dropdown-menu dropdown-animated" style="background-color: transparent; border-color: transparent; margin-top: -5px">
+                                <a class="dropdown-item" href="/logout">Sign Out</a>
+                            </div>
+                        </div>
+                {% else %}
+                <div class="nav-items u-center nav-right">
+                    <a href="/login" class="font">Login</a>
+                    <a href="/sign-in">
+                    <button class="btn--sm btn-sign_up font-bold">Sign up
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Image upload part -->
+
+    <div class="container">
+        <!-- Warning box for non-logged-in users -->
+        {% if not logged_in %}
+        <div class="upload-warning card warning-hover" style="max-width: 500px; width: 100%; margin: 20px 0 0 0; background: linear-gradient(135deg, #3498db, #2980b9); border-left: 4px solid #2c3e50; padding: 15px; border-radius: 8px;">
+            <div class="level" style="margin: 0;">
+                <div class="level-left">
+                    <div class="level-item">
+                        <i class="fas fa-triangle-exclamation" style="color: #fff; margin-right: 10px; font-size: 18px;"></i>
+                        <span style="color: #fff; font-weight: 600;">You need to login first to upload images</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="upload-card card">
+            <h2>Upload Forest Species Images</h2>
+            <div class="drop-zone {% if not logged_in %}disabled{% endif %}" id="dropZone">
+                <button class="btn btn-danger btn--xl {% if not logged_in %}btn-disabled{% else %}btn-upload{% endif %}"
+                        {% if not logged_in %}disabled{% endif %}
+                        onclick="{% if logged_in %}document.getElementById('fileInput').click(){% endif %}">
+                    Select Images
+                </button>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" {% if not logged_in %}disabled{% endif %}>
+                <p class="text-sm" style="text-decoration: underline; {% if not logged_in %}color: #666;{% endif %}">
+                    {% if logged_in %}or drop images here{% else %}Login required to upload{% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const isLoggedIn = {{ 'true' if logged_in else 'false' }};
+
+        // Only add event listeners if logged in
+        if (isLoggedIn) {
+            // Handle drag-and-drop events
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+
+            // Handle file selection via button
+            fileInput.addEventListener('change', () => {
+                const files = fileInput.files;
+                handleFiles(files);
+            });
+        } else {
+            // Add event listeners that redirect to login
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                alert('Please log in to upload images');
+                window.location.href = '/login/';
+            });
+        }
+
+        function handleFiles(files) {
+            if (!isLoggedIn) {
+                alert('Please log in to upload images');
+                window.location.href = '/login/';
+                return;
+            }
+
+            if (files.length > 0) {
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('images', files[i]);
+                }
+                // Rest of your existing upload code...
+                fetch('/upload/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.status === 401) {
+                        alert('Please log in to upload images');
+                        window.location.href = '/login/';
+                    } else if (!response.ok) {
+                        throw new Error('Upload failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Upload successful:', data);
+                    alert('Images uploaded successfully!');
+                })
+                .catch(error => {
+                    console.error('Upload error:', error);
+                    alert('Error uploading images.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

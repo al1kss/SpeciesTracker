@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticate</title>
+    <link rel="stylesheet" href="https://unpkg.com/cirrus-ui@0.7.1/dist/cirrus.min.css">
+    <script src="https://kit.fontawesome.com/8ee0b8559b.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #e0e0e0;
+        }
+        .signin-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+            background: #2d2d2d;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            color: #e0e0e0;
+        }
+        .signin-container:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+        .fa-solid {
+            color: #2d2d2d;
+        }
+        .error-message {
+            color: #e74c3c;
+            display: none;
+            margin-bottom: 1rem;
+        }
+        .login-link {
+            color: #a0a0a0;
+            text-decoration: underline;
+            text-align: center;
+            display: block;
+            margin-top: 1rem;
+        }
+        .login-link:hover {
+            color: #3498db;
+        }
+        .btn-sign_up {
+            margin-left: 10px;
+            border-radius: 12px;
+            background: #fab633 !important;
+            color: #1a1a1a !important;
+            margin-top: 10px !important;
+        }
+        .toggle-btn {
+            margin-left: 10px;
+            border-radius: 12px;
+            background: #fab633 !important;
+            color: #1a1a1a !important;
+        }
+        .dropdown-item {
+            border-radius: 8px;
+            background: #f8b73a;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            color: #1a1a1a !important;
+        }
+        .dropdown-item:hover {
+            background: #fbb01f !important;
+            color: #2d2d2d !important;
+        }
+        .header.header-fixed {
+            z-index: 1000;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+        .header-brand a, .header-nav a {
+            color: #e0e0e0;
+        }
+        .font {
+            font-family: "Avenir Next", sans-serif;
+            color: #e0e0e0;
+            padding: 15px;
+            margin-top: 4px;
+
+        }
+        </style>
+</head>
+<body>
+    <!-- Header part -->
+    <div class="header header-fixed">
+        <div class="header-brand">
+            <div class="nav-item no-hover">
+                <a href="/">
+                    <img src="/static/logo.png" alt="Logo" class="logo" style="width: 32px">
+                    <h6 class="title">ForestSpeciesTracker</h6>
+                </a>
+            </div>
+        </div>
+        <div class="header-nav">
+                <div class="nav-items nav-left u-center">
+                    <a href="/" class="font">Home</a>
+                    <a href="/about" class="font">About</a>
+                    <a href="/upload" class="font">Upload</a>
+                </div>
+        </div>
+        <div class="header-nav" id="header-menu">
+            <div class="nav-right">
+                {% if logged_in %}
+                        <div class="nav-item has-sub toggle-hover">
+                            <button class="btn--sm toggle-btn" type="button" >
+                                <i class="fa-solid fa-user"></i>  {{ username }}
+                            </button>
+                            <div class="dropdown-menu dropdown-animated">
+                                <a class="dropdown-item" href="/logout">Sign Out</a>
+                            </div>
+                        </div>
+                {% else %}
+                <div class="nav-items u-center nav-right">
+                    <a href="/login" class="font">Login</a>
+                    <a href="/sign-in">
+                    <button class="btn--sm btn-sign_up font-bold">Sign up
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="signin-container card">
+        <h2 class="u-text-center">Welcome!</h2>
+        <form id="signinForm" action="/sign-in/" method="POST">
+            <label class="font-bold" for="username">Username</label>
+            <div class="input-control">
+                <input type="text" id="username" name="username" class="input-contains-icon input-contains-icon-left" placeholder="Enter username" required>
+                <span class="icon icon-left">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+            </div>
+
+            <label class="font-bold" for="email">Email</label>
+            <div class="input-control">
+                <input type="email" id="email" name="email" class="input-contains-icon input-contains-icon-left" placeholder="alex@example.com" required>
+                <span class="icon icon-left">
+                    <i class="fa-solid fa-envelope"></i>
+                </span>
+            </div>
+            <div id="errorMessage" class="error-message">{{ error_message | default('') }}</div>
+            <div class="u-text-center">
+                <button type="submit" class="btn-warning" style="margin-top: 20px">Sign Up</button>
+            </div>
+            <a href="/login" class="login-link text-xs font-bold">Already have an account, Login!</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signinForm').addEventListener('submit', function(event) {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (!username || !email) {
+                event.preventDefault();
+                errorMessage.textContent = 'Please fill in all fields';
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        });
+
+        // Display server-side error message if present
+        const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage.textContent.trim()) {
+            errorMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
