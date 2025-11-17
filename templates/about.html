@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/8ee0b8559b.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
     <style>
         /* Base Styles with Ambient Background */
         body {
@@ -75,8 +76,8 @@
 
         .hero-title {
             font-size: 96px;
-            font-family: Inter;
-            font: Inter Fallback;
+            font-family: Inter, serif;
+            {#font: 'Inter Fallback';#}
             font-weight: 700;
             margin-bottom: 20px;
             background: linear-gradient(135deg, #e0e0e0, #cbd5e0);
@@ -91,28 +92,6 @@
             color: #999ca5;
             margin-bottom: 40px;
             line-height: 1.6;
-        }
-
-        /* Shipwrecked Badge */
-        .shipwrecked-badge {
-            opacity: 0;
-            transform: scale(0.8);
-            animation: fadeInScale 1s ease-out 0.5s forwards;
-            margin: 0 auto;
-            align-items: center;
-            display: block;
-            width: fit-content;
-        }
-
-        .shipwrecked-badge img {
-            width: 35%;
-            transition: transform 0.3s ease;
-            filter: drop-shadow(0 10px 25px rgba(250, 182, 51, 0.3));
-        }
-
-        .shipwrecked-badge img:hover {
-            transform: translateY(-10px) scale(1.05);
-            filter: drop-shadow(0 20px 40px rgba(250, 182, 51, 0.4));
         }
 
         /* Story Section */
@@ -441,9 +420,7 @@
             .story-card {
                 padding: 25px;
             }
-            .shipwrecked-badge img {
-                width: 60%;
-            }
+
         }
         .gradient-underline {
             position: relative;
@@ -481,13 +458,6 @@
     {% include 'header.html' %}
 
     <div class="about-container">
-        <div class="shipwrecked-badge" align="center">
-                <a href="https://shipwrecked.hackclub.com/?t=ghrm" target="_blank">
-                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/739361f1d440b17fc9e2f74e49fc185d86cbec14_badge.png"
-                         alt="This project is part of Shipwrecked, the world's first hackathon on an island!"
-                         style="width: 35%;">
-                </a>
-        </div>
         <!-- Hero Section -->
         <section class="hero-section">
             <h1 class="hero-title">From Frustration to Innovation</h1>
@@ -516,7 +486,7 @@
                     Here's where my <span class="highlight">past coding adventures</span> kicked in. I'd already built Minecraft plugins and created a weather app with temperature and humidity analysis. When I heard the same complaints session after session, something clicked: <strong>"Why not solve this with coding?"</strong>
                 </p>
                 <p class="story-text">
-                    This wasn't just another homework assignment. This was a real problem affecting real people in a real forest. And <span class="highlight gradient-underline">Shipwrecked</span> which motivated me to start working on making this project come true.
+                    This wasn't just another homework assignment. This was a real problem affecting real people in a real forest.
                 </p>
             </div>
         </section>
@@ -624,7 +594,7 @@
             </div>
             <h3 class="personal-title">Built by Student, for Students</h3>
             <p class="personal-description">
-                As a G11 student from Kyrgyzstan at UWC ISAK Japan, I've experienced firsthand the frustrations of traditional field data collection. This project represents not just a technical solution, but a bridge between classroom learning and real-world impact. Created for <span class="highlight">Shipwrecked</span>, the world's first island hackathon, it embodies the spirit of innovative problem-solving that defines our school community nestled in the beautiful Karuizawa forest.
+                As a G12 student from Kyrgyzstan at UWC ISAK Japan, I've experienced firsthand the frustrations of traditional field data collection
             </p>
         </section>
     </div>
